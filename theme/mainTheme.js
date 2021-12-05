@@ -8,5 +8,6 @@ export const theme = {
   orange: "#F25C00",
   yellow: "#F9A603",
   black: "#000",
+  plaster: "#D4DDE1",
   done: "#b3ffb3",
 };

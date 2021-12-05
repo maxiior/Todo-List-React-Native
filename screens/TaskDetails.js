@@ -58,10 +58,10 @@ const TaskDetails = ({ navigation }) => {
   const context = React.useContext(ThemeContext);
 
   const [task, setTask] = useState({
-    task: navigation.getParam("task"),
-    details: navigation.getParam("details"),
-    priority: navigation.getParam("priority"),
-    id: navigation.getParam("id"),
+    task: navigation.getParam("task").task,
+    details: navigation.getParam("task").details,
+    priority: navigation.getParam("task").priority,
+    id: navigation.getParam("task").id,
   });
 
   const radio_props = [
@@ -87,6 +87,35 @@ const TaskDetails = ({ navigation }) => {
           [task.task, task.details, task.priority, task.id]
         );
       });
+
+      const setTasks = navigation.getParam("setTasks");
+      setTasks((tasks) =>
+        tasks.map((e) =>
+          e.id === task.id
+            ? {
+                id: task.id,
+                task: task.task,
+                details: task.details,
+                priority: task.priority,
+              }
+            : e
+        )
+      );
+
+      pressHandler();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteTask = () => {
+    try {
+      context.db.transaction((tx) => {
+        tx.executeSql("delete from tasks where id=?;", [task.id]);
+      });
+
+      const setTasks = navigation.getParam("setTasks");
+      setTasks((tasks) => tasks.filter((e) => e.id !== task.id));
 
       pressHandler();
     } catch (error) {
@@ -148,7 +177,7 @@ const TaskDetails = ({ navigation }) => {
       </Container>
       <StyledKeyboardAvoidingView behavior="position">
         <SubmitButton value="Zapisz zmiany" submitHandler={update} />
-        <SubmitButton value="Usuń to zadanie" submitHandler={update} />
+        <SubmitButton value="Usuń to zadanie" submitHandler={deleteTask} />
       </StyledKeyboardAvoidingView>
     </Wrapper>
   );

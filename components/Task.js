@@ -34,7 +34,7 @@ const Task = ({ task, navigation, setTasks, hide }) => {
   const context = React.useContext(ThemeContext);
 
   const pressHandler = () => {
-    navigation.navigate("TaskDetails", task);
+    navigation.navigate("TaskDetails", { task, setTasks });
   };
 
   const update = () => {

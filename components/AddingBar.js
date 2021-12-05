@@ -13,7 +13,7 @@ import { ThemeContext } from "../context";
 
 const Wrapper = styled.View`
   width: 100%;
-  background-color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.plaster};
   position: absolute;
   bottom: 0;
   padding: 35px 15px 100px 15px;
@@ -38,6 +38,7 @@ const StyledTextInput = styled.TextInput`
   padding: 10px;
   margin-top: 10px;
   background-color: ${({ theme }) => theme.orange};
+  border-radius: 10px;
 `;
 
 const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
@@ -53,7 +54,7 @@ const AddingBar = ({ pressHandler, setTasks }) => {
     { label: "Bardzo ważne", value: 2 },
   ];
 
-  const [task, setTask] = useState({ task: "", details: "", priority: "" });
+  const [task, setTask] = useState({ task: "", details: "", priority: 0 });
   const fromTheme = useTheme();
 
   const submitHandler = () => {

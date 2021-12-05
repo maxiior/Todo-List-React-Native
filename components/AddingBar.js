@@ -69,8 +69,8 @@ const AddingBar = ({ pressHandler, setTasks }) => {
 
     context.db.transaction((tx) => {
       tx.executeSql(
-        "insert into tasks (task, details, priority, done) values (?, ?, ?, 0)",
-        [task.task, task.details, task.priority]
+        "insert into tasks (task, details, priority, done, added) values (?, ?, ?, 0, ?)",
+        [task.task, task.details, task.priority, new Date().toString()]
       );
     });
 

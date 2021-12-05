@@ -50,6 +50,10 @@ const Header = styled.Text`
   margin-top: ${({ margin }) => (margin ? "40px" : "0px")};
 `;
 
+const Date = styled.Text`
+  font-size: 20px;
+`;
+
 const RadioButtonsHolder = styled.View`
   margin-top: 10px;
 `;
@@ -62,6 +66,8 @@ const TaskDetails = ({ navigation }) => {
     details: navigation.getParam("task").details,
     priority: navigation.getParam("task").priority,
     id: navigation.getParam("task").id,
+    done: navigation.getParam("task").done,
+    added: navigation.getParam("task").added,
   });
 
   const radio_props = [
@@ -97,6 +103,8 @@ const TaskDetails = ({ navigation }) => {
                 task: task.task,
                 details: task.details,
                 priority: task.priority,
+                done: task.done,
+                added: task.added,
               }
             : e
         )
@@ -121,6 +129,15 @@ const TaskDetails = ({ navigation }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const date = () => {
+    let elements = task.added.split(" ");
+    let date = elements[2];
+    date += " " + elements[1];
+    date += " " + elements[3];
+    date += " " + elements[4];
+    return date;
   };
 
   return (
@@ -174,6 +191,8 @@ const TaskDetails = ({ navigation }) => {
             ))}
           </RadioForm>
         </RadioButtonsHolder>
+        <Header margin>Data dodania</Header>
+        <Date>{date()}</Date>
       </Container>
       <StyledKeyboardAvoidingView behavior="position">
         <SubmitButton value="Zapisz zmiany" submitHandler={update} />

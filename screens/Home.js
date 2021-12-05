@@ -38,7 +38,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     context.db.transaction((tx) => {
       tx.executeSql(
-        "create table if not exists tasks (id integer primary key autoincrement, task text, details text, priority integer, done integer);"
+        "create table if not exists tasks (id integer primary key autoincrement, task text, details text, priority integer, done integer, added string);"
       );
     });
   }, []);

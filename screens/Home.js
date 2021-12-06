@@ -5,6 +5,11 @@ import styled from "styled-components/native";
 import AddingBar from "../components/AddingBar";
 import { ThemeContext } from "../context";
 import Options from "../components/Options";
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  setTestDeviceIDAsync,
+} from "expo-ads-admob";
 
 const StyledFlatList = styled.FlatList`
   width: 100%;
@@ -24,6 +29,11 @@ const Container = styled.View`
   width: 100%;
 `;
 
+const StyledAdMobBanner = styled(AdMobBanner)`
+  margin-left: -20px;
+  margin-top: 15px;
+`;
+
 const Home = ({ navigation }) => {
   const [addingBar, setAddingBar] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -41,7 +51,13 @@ const Home = ({ navigation }) => {
         "create table if not exists tasks (id integer primary key autoincrement, task text, details text, priority integer, done integer, added string);"
       );
     });
+    initAds().catch((error) => console.log(error));
   }, []);
+
+  const initAds = async () => {
+    AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/6300978111");
+    await setTestDeviceIDAsync("EMULATOR");
+  };
 
   useEffect(() => {
     context.db.transaction((tx) => {
@@ -68,12 +84,22 @@ const Home = ({ navigation }) => {
               : tasks.sort((a, b) => a.task > b.task)
           }
           renderItem={({ item }) => (
-            <Task
-              task={item}
-              navigation={navigation}
-              setTasks={setTasks}
-              hide={options.hideDone}
-            />
+            <>
+              <Task
+                task={item}
+                navigation={navigation}
+                setTasks={setTasks}
+                hide={options.hideDone}
+              />
+              {Math.random() > 0.8 && (
+                <StyledAdMobBanner
+                  bannerSize="smartBannerPortrait"
+                  adUnitID="ca-app-pub-3940256099942544/6300978111"
+                  servePersonalizedAds
+                  onDidFailToReceiveAdWithError={this.bannerError}
+                />
+              )}
+            </>
           )}
         />
         {!addingBar && <AddingButton pressHandler={pressHandler} />}

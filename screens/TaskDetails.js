@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
 import SubmitButton from "../components/SubmitButton";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -9,6 +9,7 @@ import RadioForm, {
   RadioButtonLabel,
 } from "react-native-simple-radio-button";
 import { ThemeContext } from "../context";
+import { AdMobRewarded } from "expo-ads-admob";
 
 const BackArrowIcon = styled(SimpleLineIcons)`
   font-size: 25px;
@@ -69,6 +70,18 @@ const TaskDetails = ({ navigation }) => {
     done: navigation.getParam("task").done,
     added: navigation.getParam("task").added,
   });
+
+  useEffect(() => {
+    if (Math.random() > 0.5) {
+      initAds().catch((error) => console.log(error));
+    }
+  }, []);
+
+  const initAds = async () => {
+    await AdMobRewarded.setAdUnitID("ca-app-pub-3940256099942544/5224354917"); // Test ID, Replace with your-admob-unit-id
+    await AdMobRewarded.requestAdAsync();
+    await AdMobRewarded.showAdAsync();
+  };
 
   const radio_props = [
     { label: "Mało ważne", value: 0 },

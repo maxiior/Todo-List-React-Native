@@ -78,7 +78,7 @@ const TaskDetails = ({ navigation }) => {
   }, []);
 
   const initAds = async () => {
-    await AdMobRewarded.setAdUnitID("ca-app-pub-3940256099942544/5224354917"); // Test ID, Replace with your-admob-unit-id
+    await AdMobRewarded.setAdUnitID("ca-app-pub-3940256099942544/5224354917");
     await AdMobRewarded.requestAdAsync();
     await AdMobRewarded.showAdAsync();
   };
